@@ -1,0 +1,68 @@
+@model User
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="~/css/dispstyle.css" />
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #3c9edf">
+    <a class="navbar-brand text-light" href="#">Welcome, @Model.FirstName</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link text-light" asp-action="Dashboard">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-light" asp-action="MyPlan" asp-controller="Home"
+                    asp-route-userId="@Model.UserId">My Plan <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a asp-action="LogOut" asp-controller="Home" class="nav-link text-light">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+
+<body>
+    <div class="intro">
+        <h3>@Model.FirstName's Saved Workouts</h3>
+    </div>
+    @if(@ViewBag.Compare.UserId == Model.UserId)
+    {
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th class="wName" scope="col">Workout Name</th>
+                <th class="wDescription" scope="col">Instructions</th>
+                <th class="wAnimation" scope="col">Workout Demonstration</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.MyPlan)
+            {
+            <tr>
+                <td class="wName">
+                    <h4>@item.WorkoutPlan.WorkoutName</h4><br><br><a asp-action="AddWorkout" asp-controller="Home"
+                        class="btn btn-danger" asp-route-workout_id="@item.WorkoutPlan.WorkoutId"
+                        asp-route-userId="@ViewBag.Compare.UserId" asp-route-status="remove">Remove Workout</a>
+                </td>
+                <td class="wDescription"> @item.WorkoutPlan.Description</td>
+                <td class="wAnimation"><img src="@item.WorkoutPlan.Animation" alt="~/imgs/Bench-Press.gif"></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+</body>
